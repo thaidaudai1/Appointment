@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment - Hệ thống đặt lịch hẹn</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #243047;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px #0000000d;
+        }
+
+        .logo {
+            color: #2563eb;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #334155;
+            margin-left: 24px;
+        }
+
+        .hero {
+            padding: 65px 8%;
+            background: linear-gradient(120deg, #1d4ed8, #60a5fa);
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .container {
+            width: 84%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px #0f172a0b;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #d6deea;
+            border-radius: 8px;
+            font-size: 15px;
+            width: 100%;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #2563eb;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            background: #2563eb;
+            color: white;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .appointments {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .appointment-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .appointment-item h3 {
+            color: #2563eb;
+            margin-bottom: 12px;
+        }
+
+        .appointment-item p {
+            margin: 9px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .cancel-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            margin-top: 12px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            background: #172554;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 18px 5%;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .hero {
+                padding: 45px 5%;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Appointment</div>
+        <nav>
+            <a href="#home">Trang chủ</a>
+            <a href="#booking">Đặt lịch</a>
+            <a href="#appointments">Lịch hẹn</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Hệ thống đặt lịch hẹn</h1>
+        <p>Đặt lịch nhanh chóng, thuận tiện và tiết kiệm thời gian.</p>
+        <p>Chủ động lựa chọn dịch vụ, ngày giờ phù hợp với bạn.</p>
+    </section>
+
+    <main class="container">
+
+        <section id="booking">
+            <div class="section-title">
+                <h2>Đặt lịch ngay</h2>
+                <p>Vui lòng điền đầy đủ thông tin bên dưới.</p>
+            </div>
+
+            <div class="card">
+                <form id="bookingForm">
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="name">Họ và tên *</label>
+                            <input id="name" type="text"
+                                placeholder="Nhập họ và tên"
+                                maxlength="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại *</label>
+                            <input id="phone" type="tel"
+                                placeholder="Nhập số điện thoại"
+                                pattern="[0-9 +().-]{9,20}"
+                                title="Nhập số điện thoại hợp lệ"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Dịch vụ *</label>
+                            <select id="service" required>
+                                <option value="">-- Chọn dịch vụ --</option>
+                                <option value="Tư vấn">Tư vấn</option>
+                                <option value="Khám và kiểm tra">Khám và kiểm tra</option>
+                                <option value="Chăm sóc khách hàng">Chăm sóc khách hàng</option>
+                                <option value="Dịch vụ khác">Dịch vụ khác</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Ngày hẹn *</label>
+                            <input id="date" type="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time">Giờ hẹn *</label>
+                            <select id="time" required>
+                                <option value="">-- Chọn giờ --</option>
+                                <option>08:00</option>
+                                <option>09:00</option>
+                                <option>10:00</option>
+                                <option>11:00</option>
+                                <option>13:00</option>
+                                <option>14:00</option>
+                                <option>15:00</option>
+                                <option>16:00</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="note">Ghi chú</label>
+                            <textarea id="note" rows="3"
+                                maxlength="500"
+                                placeholder="Nhập yêu cầu thêm (nếu có)"></textarea>
+                        </div>
+
+                    </div>
+
+                    <button class="submit-btn" type="submit">
+                        Xác nhận đặt lịch
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="appointments">
+            <div class="section-title">
+                <h2>Danh sách lịch hẹn</h2>
+                <p>Quản lý các lịch hẹn đã đăng ký.</p>
+            </div>
+
+            <div class="appointments" id="appointmentList"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p><strong>Appointment</strong> - Hệ thống đặt lịch hẹn</p>
+        <p>Đơn giản - Nhanh chóng - Tiện lợi</p>
+        <p>© 2026 Appointment. Bài tập thực hành thiết kế website.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById("bookingForm");
+        const list = document.getElementById("appointmentList");
+        const dateInput = document.getElementById("date");
+
+        // Chặn chọn ngày trong quá khứ
+        const today = new Date();
+        const localToday = [
+            today.getFullYear(),
+            String(today.getMonth() + 1).padStart(2, "0"),
+            String(today.getDate()).padStart(2, "0")
+        ].join("-");
+
+        dateInput.min = localToday;
+
+        // Đọc lịch hẹn đã lưu trong trình duyệt
+        let appointments = [];
+
+        try {
+            appointments = JSON.parse(
+                localStorage.getItem("appointments") || "[]"
+            );
+
+            if (!Array.isArray(appointments)) {
+                appointments = [];
+            }
+        } catch {
+            appointments = [];
+        }
+
+        function saveAppointments() {
+            try {
+                localStorage.setItem(
+                    "appointments",
+                    JSON.stringify(appointments)
+                );
+                return true;
+            } catch {
+                alert("Không thể lưu dữ liệu. Hãy kiểm tra trình duyệt.");
+                return false;
+            }
+        }
+
+        // Hiển thị danh sách lịch hẹn
+        function renderAppointments() {
+            list.replaceChildren();
+
+            if (appointments.length === 0) {
+                const empty = document.createElement("div");
+                empty.className = "empty";
+                empty.textContent = "Bạn chưa có lịch hẹn nào.";
+                list.appendChild(empty);
+                return;
+            }
+
+            appointments.forEach((item) => {
+                const card = document.createElement("article");
+                card.className = "appointment-item";
+
+                const title = document.createElement("h3");
+                title.textContent = item.name;
+
+                card.appendChild(title);
+
+                const details = [
+                    ["Số điện thoại", item.phone],
+                    ["Dịch vụ", item.service],
+                    ["Ngày hẹn", item.date],
+                    ["Giờ hẹn", item.time],
+                    ["Ghi chú", item.note || "Không có"]
+                ];
+
+                details.forEach(([label, value]) => {
+                    const p = document.createElement("p");
+                    p.textContent = label + ": " + value;
+                    card.appendChild(p);
+                });
+
+                const cancelButton = document.createElement("button");
+                cancelButton.className = "cancel-btn";
+                cancelButton.textContent = "Hủy lịch hẹn";
+
+                cancelButton.addEventListener("click", () => {
+                    if (!confirm("Bạn có chắc muốn hủy lịch hẹn này?")) {
+                        return;
+                    }
+
+                    const previous = appointments;
+                    appointments = appointments.filter(
+                        appointment => appointment.id !== item.id
+                    );
+
+                    if (saveAppointments()) {
+                        renderAppointments();
+                    } else {
+                        appointments = previous;
+                    }
+                });
+
+                card.appendChild(cancelButton);
+                list.appendChild(card);
+            });
+        }
+
+        // Xử lý khi người dùng đặt lịch
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const appointmentDate = dateInput.value;
+
+            if (appointmentDate < localToday) {
+                alert("Vui lòng chọn ngày hôm nay hoặc ngày trong tương lai.");
+                return;
+            }
+
+            const newAppointment = {
+                id: Date.now().toString() + Math.random().toString(16).slice(2),
+                name: document.getElementById("name").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                service: document.getElementById("service").value,
+                date: appointmentDate,
+                time: document.getElementById("time").value,
+                note: document.getElementById("note").value.trim()
+            };
+
+            if (!newAppointment.name || !newAppointment.phone) {
+                alert("Vui lòng nhập họ tên và số điện thoại.");
+                return;
+            }
+
+            const duplicate = appointments.some(item =>
+                item.date === newAppointment.date &&
+                item.time === newAppointment.time
+            );
+
+            if (duplicate) {
+                alert("Khung giờ này đã có lịch hẹn. Vui lòng chọn giờ khác.");
+                return;
+            }
+
+            appointments.push(newAppointment);
+
+            if (saveAppointments()) {
+                alert("Đặt lịch thành công!");
+                form.reset();
+                dateInput.min = localToday;
+                renderAppointments();
+            } else {
+                appointments.pop();
+            }
+        });
+
+        renderAppointments();
+    </script>
+
+</body>
+</html>
